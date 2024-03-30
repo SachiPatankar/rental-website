@@ -4,9 +4,10 @@ import Header from './src/pages/Header';
 
 const Layout = () => {
   return (
-    <div className='p-4 flex-col min-h-screen'>
+    <div className='pt-4 min-h-screen flex flex-col' style={{ height: '100vh' }}>
         <Header/>
-        <Outlet/>
+        <Outlet />
+   
     </div>
   )
 }
