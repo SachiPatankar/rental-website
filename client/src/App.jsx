@@ -1,28 +1,17 @@
-import './App.css'
-import {Routes,Route} from "react-router-dom";
-import LoginPage from './pages/LoginPage';
-import IndexPage from './pages/IndexPage';
-import Layout from '../Layout';
-import RegisterPage from './pages/RegisterPage';
+import {Routes, Route} from "react-router-dom";
+import { Loginpage, Homepage, Productpage } from "./components";
+import Layout from "./Layout";
 
-import axios from 'axios';
-import { UserContextProvider } from './pages/UserContext';
 
-axios.defaults.baseURL = "http://localhost:4000";
-axios.defaults.withCredentials = true;
-function App() {
-  return (
-    <UserContextProvider>
-      <Routes>
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/register" element={<RegisterPage/>}/>
-
-        <Route path="/" element={<Layout/>}>
-          <Route index element={<IndexPage/>}/>
-        </Route>
-        
-      </Routes>
-    </UserContextProvider>
+function App(){
+ return (
+    <Routes>
+      <Route path="/" element={<Layout/>}>
+          <Route path="/" element = {<Homepage/>}/>
+          <Route path="/login" element = {<Loginpage/>}/>
+          <Route path="/product-details" element = {<Productpage/>}/>
+      </Route>
+    </Routes>
   )
 }
 
