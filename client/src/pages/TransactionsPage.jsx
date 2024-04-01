@@ -3,47 +3,7 @@ import { useContext } from 'react';
 import { UserContext } from './UserContext'
 import {Navigate} from "react-router-dom";
 import Header2 from './Header-2';
-
-// {/* <div className="flex-col h-full w-3 w-3/12 divide-y divide-slate-200 rounded-xl mt-12 bg-white  " > 
-//         {buttonsData.map((button, index) => (
-        
-//           <div className='w-full h-16 flex items-center pl-6  '>
-//             {/* <img src={button.icon} alt={button.text} /> */}
-//             <a href={button.link}>{button.text}</a>
-//           </div>
-//           ))}
-        
-//         </div>
-
-//         <div>
-          
-//         </div> */}
-
-const buttonsData = [
-  {
-    text: 'Dashboard',
-    icon: 'icon-1.png',
-    link: '/link1'
-  },
-  {
-    text: 'Active products',
-    icon: 'icon-2.png',
-    link: '/link2'
-  },
-
-  {
-    text: 'History',
-    icon: 'icon-2.png',
-    link: '/link2'
-  },
-
-  {
-    text: 'My items on rent',
-    icon: 'icon-2.png',
-    link: '/link2'
-  },
-  // Add more button data as needed
-];
+import ChatComponent from './ChatComponent.jsx';
 
 const TransactionsPage = () => {
     const {ready,user} = useContext(UserContext);
@@ -70,11 +30,12 @@ const TransactionsPage = () => {
             <p>A very good camera, something else amazing</p>
             <h3>Pune</h3>
             <h2>₹ 99/per day</h2>
+            <button className='text-white px-3 py-1 rounded-3xl mt-4 bg-lime-500'>Confirmed</button>
           </div>
         </div>
 
         <div className='ml-auto flex items-center pr-6'>
-        <button className='bg-primary text-white px-4 py-2 rounded-3xl'>Chat Now</button>
+        <ChatComponent/>
         </div>
       </div>
 
@@ -86,11 +47,12 @@ const TransactionsPage = () => {
             <p>A very good camera, something else amazing</p>
             <h3>Pune</h3>
             <h2>₹ 99/per day</h2>
+            <button className='text-white px-3 py-1 rounded-3xl mt-4 bg-rose-600'>Declined</button>
           </div>
         </div>
 
         <div className='ml-auto flex items-center pr-6'>
-        <button className='bg-primary text-white px-4 py-2 rounded-3xl'>Chat Now</button>
+        <ChatComponent/>
         </div>
       </div>
 
@@ -102,18 +64,15 @@ const TransactionsPage = () => {
             <p>A very good camera, something else amazing</p>
             <h3>Pune</h3>
             <h2>₹ 99/per day</h2>
+            <button className='text-white px-3 py-1 rounded-3xl mt-4 bg-blue-600'>Requested</button>
           </div>
         </div>
 
         <div className='ml-auto flex items-center pr-6'>
-        <button className='bg-primary text-white px-4 py-2 rounded-3xl'>Chat Now</button>
+        {/* <button className='bg-primary text-white px-4 py-2 rounded-3xl'>Chat Now</button> */}
+        <ChatComponent/>
         </div>
       </div>
-
-      
-
-      
-      
         
     </div>
 

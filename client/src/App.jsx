@@ -9,6 +9,8 @@ import TransactionsPage from './pages/TransactionsPage';
 import axios from 'axios';
 import { UserContextProvider } from './pages/UserContext';
 import AccountPage from './pages/TransactionsPage';
+import ProfilePage from './pages/ProfilePage';
+import Chatbot from './pages/ChatPage';
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -25,6 +27,8 @@ function App() {
         </Route>
 
         <Route path="/transactions" element = {<TransactionsPage/>}/>
+        <Route path="/myprofile" element = {<ProfilePage/>}/>
+        <Route path="/chat" element= {<Chatbot/>}/>
         
       </Routes>
     </UserContextProvider>

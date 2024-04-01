@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Link} from "react-router-dom";
 import {useContext} from "react";
 import { UserContext } from './UserContext';
 
+const logout = async() =>{
+  await axios.post("/logout");
+}
 
 const Header2 = () => {
     const {user} = useContext(UserContext);
+
+    const [toggle,setToggle] = useState(false);
+
+    const handleMenuToggle = () => {
+      setToggle(!toggle);
+    };
     return (
       <header className="flex justify-between w-full pb-8">
         <Link to={'/'} className="flex items-center gap-1">
@@ -13,11 +22,13 @@ const Header2 = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
           </svg>
 
-          <span className="font-bold text-xl">airbnb</span>
+          <span className="font-bold text-xl">Rental@PICT</span>
 
         </Link>
 
-        <Link to={user?'/account':'/login'} className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 ">
+        <Link to={user? null :'/login'} 
+              className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
+              onClick={user ? handleMenuToggle : null}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
@@ -32,6 +43,34 @@ const Header2 = () => {
             </div>
           )}
         </Link>
+
+
+
+
+        <div
+          className={`${
+            !toggle ? "hidden" : "flex"
+          } p-6 bg-slate-50 absolute top-20 right-10 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+        >
+
+          
+
+          <ul className="list-none flex justify-end items-start flex-1 flex-col">
+            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link to={"/myprofile"}>My Profile</Link>
+            </li>
+            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link to={"/transactions"}>Ongoing Transactions</Link>
+            </li>
+            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link to={"/myprofile"}>My Profile</Link>
+            </li>
+            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link onClick={logout}>Logout</Link>
+            </li>
+          </ul>
+
+        </div>
       </header>
     );
 }
