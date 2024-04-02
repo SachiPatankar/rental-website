@@ -5,6 +5,12 @@ import {User} from "./models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import download from "image-downloader";
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 4000;
@@ -122,6 +128,23 @@ app.get('/profile', (req,res) => {
 
 app.post("/logout", (req,res)=>{
   res.cookie('token', "").json(true);
+})
+
+app.post('/upload-by-link' , async (req,res) =>{
+    const link = req.body.link;
+    const newName = Date.now() + '.jpg';
+
+    const options = {
+      url: link,
+      dest: __dirname+ "/uploads/" + newName,    
+    };
+    
+    download.image(options)
+      .then(({ filename }) => {
+        res.json(newName);
+        console.log('Saved to', filename); 
+      })
+      .catch((err) => console.error(err)); 
 })
 
 app.listen(PORT, () => {

@@ -10,6 +10,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  area: {
+    type: String,
+    required: true
+  },
   category: {
     type: String,
     required: true
@@ -19,12 +23,12 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   owner: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  imageURL: {
-    type: String,
+  photos: {
+    type: [String],
     required: true
   },
   isAvailable: {

@@ -2,19 +2,28 @@ import React, { useState } from 'react'
 import {Link} from "react-router-dom";
 import {useContext} from "react";
 import { UserContext } from './UserContext';
+import {Navigate} from "react-router-dom";
 
-const logout = async() =>{
-  await axios.post("/logout");
-}
 
 const Header2 = () => {
-    const {user} = useContext(UserContext);
+  const {user,setUser,ready} = useContext(UserContext);
+  const [redirect,setRedirect] = useState(null);
 
-    const [toggle,setToggle] = useState(false);
-
+  const [toggle,setToggle] = useState(false);
     const handleMenuToggle = () => {
       setToggle(!toggle);
     };
+
+    const logout = async() =>{
+      await axios.post('/logout');
+      setRedirect('/login');
+      setUser(null);
+    }
+
+    if (redirect) {
+      return <Navigate to={redirect} />
+    }
+
     return (
       <header className="flex justify-between w-full pb-8">
         <Link to={'/'} className="flex items-center gap-1">
@@ -63,7 +72,7 @@ const Header2 = () => {
               <Link to={"/transactions"}>Ongoing Transactions</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
-              <Link to={"/myprofile"}>My Profile</Link>
+              <Link to={"/myitems"}>My Items</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link onClick={logout}>Logout</Link>

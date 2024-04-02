@@ -11,6 +11,7 @@ import { UserContextProvider } from './pages/UserContext';
 import AccountPage from './pages/TransactionsPage';
 import ProfilePage from './pages/ProfilePage';
 import Chatbot from './pages/ChatPage';
+import AddProductPage from './pages/AddProductPage';
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -23,8 +24,10 @@ function App() {
 
         <Route path="/" element={<Layout/>}>
           <Route index element={<IndexPage/>}/>
-         
+        
         </Route>
+
+        <Route path="/addproduct" element= {<AddProductPage/>}/>
 
         <Route path="/transactions" element = {<TransactionsPage/>}/>
         <Route path="/myprofile" element = {<ProfilePage/>}/>

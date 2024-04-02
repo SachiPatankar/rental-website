@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {useContext} from "react";
 import { UserContext } from './UserContext';
 import axios from "axios";
+import { search } from '../assets';
 
 const logout = async() =>{
   await axios.post("/logout");
@@ -27,8 +28,8 @@ const Header = () => {
           <span className="font-bold text-xl">Rental@PICT</span>
         </Link>
 
-        <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300 justify-start">
-          
+        
+{/*           
           <div>Anywhere</div>
           <div className="border-l border-gray-300"></div>
           <div>Any week</div>
@@ -39,8 +40,25 @@ const Header = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-          </button> 
-        </div>
+          </button> */}
+
+      
+      <div className={` flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
+              <input placeholder='Search...' className='border-none focus:outline-none'></input>
+              <button className="bg-[#30d5c8] rounded-full p-1">
+                <img src={search} alt="search" />
+              </button>
+          </div>
+
+      
+             
+
+
+
+
+        
+
+
         <Link to={user? null :'/login'} 
               className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
               onClick={user ? handleMenuToggle : null}>
@@ -78,7 +96,7 @@ const Header = () => {
               <Link to={"/transactions"}>Ongoing Transactions</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
-              <Link to={"/myprofile"}>My Profile</Link>
+              <Link to={"/myitems"}>My Items</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link onClick={logout}>Logout</Link>
