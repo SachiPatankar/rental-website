@@ -1,11 +1,11 @@
 import Header from "./Header";
-import Loginpage from "./Loginpage";
 import Homepage from "./Homepage";
 import Productpage from "./Productpage";
+import Categorybar from "./Categorybar";
 
 export{
+    Categorybar,
     Header,
-    Loginpage,
     Homepage,
     Productpage,
 };

@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { logo, search, user, menu } from "../assets";
+import Categorybar from "./Categorybar";
 
-const Navbar = () => {
+
+const Header = () => {
   const [toggle,setToggle] = useState(false)
   return(
+    <>
     <div >
         <header className="px-10 py-4 flex justify-between">
             <div className="flex items-center gap-1">
@@ -48,7 +51,10 @@ const Navbar = () => {
         </div>
         
     </div>
+    <Categorybar/>
+    </>
   );  
 };
 
-export default Navbar;
+
+export default Header;
