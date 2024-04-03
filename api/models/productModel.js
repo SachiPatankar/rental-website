@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Define the schema for the Product model
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -39,6 +38,4 @@ const productSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Create the Product model using the schema
-const Product = mongoose.model('Product', productSchema);
-
-export default Product;
+export const Product = mongoose.model("Product", productSchema);

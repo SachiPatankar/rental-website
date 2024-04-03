@@ -2,12 +2,15 @@ import express from "express";
 import cors from "cors";
 import connectDb from "./config/db.js";
 import {User} from "./models/userModel.js";
+import {Product} from "./models/productModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import download from "image-downloader";
 import { fileURLToPath } from 'url';
 import path from 'path';
+import multer from "multer";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +24,11 @@ const jwtSecret = "sdfhmsgwsrff32535esgdgcgbdf";
 connectDb();
 
 app.use(express.json());
+
 app.use(cookieParser());
+
+app.use('/uploads', express.static(__dirname + "/uploads"));
+
 
 app.use(cors({
     credentials:true,
@@ -145,6 +152,46 @@ app.post('/upload-by-link' , async (req,res) =>{
         console.log('Saved to', filename); 
       })
       .catch((err) => console.error(err)); 
+})
+
+const photosMiddleware = multer({dest:'uploads'})
+app.post("/upload", photosMiddleware.array('photos', 100) ,(req,res)=>{
+  
+  const uploadedFiles = [];
+  for(let i = 0; i < req.files.length; i++)
+  {
+    const {path, originalname} = req.files[i];
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads\\", ''));
+
+  }
+  res.json(uploadedFiles)
+})
+
+app.post("/products", (req,res)=>{
+  
+  const {token} = req.cookies;
+
+  const {name,description,area,category,price,addedphotos} = req.body
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+    const productDoc = await Product.create({
+      name: name,
+      description: description ,
+      area: area,
+      category: category,
+      price: price,
+      owner: userData.id,
+      photos: addedphotos,
+      isAvailable: true,
+    });
+    res.json(productDoc);
+  });
+  
+  
 })
 
 app.listen(PORT, () => {
