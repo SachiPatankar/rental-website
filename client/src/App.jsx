@@ -12,6 +12,7 @@ import AccountPage from './pages/TransactionsPage';
 import ProfilePage from './pages/ProfilePage';
 import Chatbot from './pages/ChatPage';
 import AddProductPage from './pages/AddProductPage';
+import Productpage from './pages/ProductPage';
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -24,6 +25,9 @@ function App() {
 
         <Route path="/" element={<Layout/>}>
           <Route index element={<IndexPage/>}/>
+          <Route path="/product" element={<Productpage/>}/>
+          <Route path="/product/:id" element={<Productpage/>}/>
+
         
         </Route>
 

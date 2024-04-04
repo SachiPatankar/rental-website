@@ -190,9 +190,62 @@ app.post("/products", (req,res)=>{
     });
     res.json(productDoc);
   });
-  
-  
 })
+
+app.get("/products", async(req,res) => {
+  try{
+    const data = await Product.find();
+    res.json(data);
+    console.log(data);
+  }catch(e){
+    console.error("Error in /register route: ", e);
+    res.status(422).json({error: e.message});
+  }
+});
+
+app.get("/product/:id", async(req,res) => {
+  const id = req.params.id;
+  try{
+    const data = await Product.findById(id);
+    res.json(data);
+    console.log(data);
+  }catch(e){
+    console.error("Error in /register route: ", e);
+    res.status(422).json({error: e.message});
+  }
+});
+
+app.put('/products', async (req,res) => {
+  const {token} = req.cookies;
+  const {id,name,description,area,category,price,addedphotos, owner} = req.body
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+
+    const productDoc = await Product.findById(id);
+    if (userData.id === productDoc.owner.toString()) {
+      productDoc.set({
+        name,description,area,category,price,photos:addedphotos
+      });
+      await productDoc.save();
+      res.json('ok');
+    }
+  });
+});
+
+app.delete("/product/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+    await product.deleteOne();
+    res.json({ message: "Note deleted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(PORT, () => {
     console.log(`Server live on ${PORT}`);

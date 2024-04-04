@@ -8,6 +8,8 @@ import test2 from "./test2.jpg";
 import test3 from "./test3.jpg";
 import test4 from "./test4.jpg";
 
+import calendar from "./calendar.svg";
+
 
 export {
     logo,
@@ -18,4 +20,5 @@ export {
     test2,
     test3,
     test4,
+    calendar
 };
