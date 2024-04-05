@@ -3,6 +3,7 @@ import cors from "cors";
 import connectDb from "./config/db.js";
 import {User} from "./models/userModel.js";
 import {Product} from "./models/productModel.js";
+import {Request} from "./models/requestModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -206,7 +207,22 @@ app.get("/products", async(req,res) => {
 app.get("/product/:id", async(req,res) => {
   const id = req.params.id;
   try{
-    const data = await Product.findById(id);
+    const data = await Product.findById(id).populate({
+      path: 'owner',
+      select: 'name surname locality city',
+    });
+    res.json(data);
+    console.log(data);
+  }catch(e){
+    console.error("Error in /register route: ", e);
+    res.status(422).json({error: e.message});
+  }
+});
+
+app.get("/products/:category", async(req,res) => {
+  const cat = req.params.category;
+  try{
+    const data = await Product.find({category : cat});
     res.json(data);
     console.log(data);
   }catch(e){
@@ -246,6 +262,66 @@ app.delete("/product/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+app.post("/request", (req,res)=>{
+  
+  const {token} = req.cookies;
+  const {owner,from,to, product} = req.body
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+    const requestDoc = await Request.create({
+      owner,
+      renter: userData.id,
+      from,
+      to,
+      product,
+    });
+    res.json(requestDoc);
+  });
+})
+
+app.get('/myrequests', async (req,res) => {
+  
+  const {token} = req.cookies;
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+
+    try{
+      const data = await Request.find({ renter: userData.id }).populate({
+        path: 'owner',
+        select: 'name surname locality city'
+    }).populate('product');
+      res.json(data);
+      console.log(data);
+      }
+    catch(e){
+      console.error("Error in /register route: ", e);
+      res.status(422).json({error: e.message});
+      }
+  });
+});
+
+app.get('/myitems', async (req,res) => {
+  const {token} = req.cookies;
+
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+
+    try{
+      const data = await Product.find({ owner: userData.id })
+      res.json(data);
+      console.log(data);
+      }
+    catch(e){
+      console.error("Error in /register route: ", e);
+      res.status(422).json({error: e.message});
+      }
+  });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server live on ${PORT}`);

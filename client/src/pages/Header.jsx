@@ -19,7 +19,8 @@ const Header = () => {
     };
 
     return (
-      <header className="flex justify-between w-full pb-8">
+      <header >
+        <div className="flex justify-between w-full pb-8">
         <Link to={'/'} className="flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 -rotate-90">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
@@ -43,21 +44,24 @@ const Header = () => {
           </button> */}
 
       
-      <div className={` flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
+      <div className={`hidden md:flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
               <input placeholder='Search...' className='border-none focus:outline-none'></input>
-              <button className="bg-[#30d5c8] rounded-full p-1">
+              <button className="bg-primary rounded-full p-1">
                 <img src={search} alt="search" />
               </button>
           </div>
 
       
+
              
 
-
-
-
         
-
+        <div className='flex gap-2'>
+          <Link to={"/notifications"} className='m-auto'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z" clip-rule="evenodd" />
+          </svg>
+          </Link>
 
         <Link to={user? null :'/login'} 
               className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
@@ -77,6 +81,8 @@ const Header = () => {
           )}
         </Link>
 
+        </div>
+
 
 
 
@@ -85,9 +91,6 @@ const Header = () => {
             !toggle ? "hidden" : "flex"
           } p-6 bg-slate-50 absolute top-20 right-10 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
         >
-
-          
-
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link to={"/myprofile"}>My Profile</Link>
@@ -104,8 +107,13 @@ const Header = () => {
           </ul>
 
         </div>
-
-
+        </div>
+        <div className={`md:hidden flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
+              <input placeholder='Search...' className='border-none focus:outline-none'></input>
+              <button className="bg-primary rounded-full p-1">
+                <img src={search} alt="search" />
+              </button>
+          </div>
       </header>
     );
 }

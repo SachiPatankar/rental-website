@@ -3,15 +3,36 @@ import { Link } from "react-router-dom"
 import axios from "axios";
 
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 
 const IndexPage = () => {
 
-    const [products,setProducts] = useState([]);
+    // const [products,setProducts] = useState([]);
+    // useEffect(() => {
+    //   axios.get('/products').then(response => {
+    //     setProducts(response.data);
+    //   });
+    // }, []);
+
+    const [products, setProducts] = useState([]);
+    const { category } = useParams(); // Get the category parameter from the URL
+
     useEffect(() => {
-      axios.get('/products').then(response => {
-        setProducts(response.data);
-      });
-    }, []);
+        if (category) {
+            axios.get(`/products/${category}`).then(response => {
+                setProducts(response.data);
+            }).catch(error => {
+                console.error('Error fetching products by category:', error);
+            });
+        } else {
+            // If no category is selected, fetch all products
+            axios.get('/products').then(response => {
+                setProducts(response.data);
+            }).catch(error => {
+                console.error('Error fetching all products:', error);
+            });
+        }
+    }, [category]);
 
   return(
     <div className="">

@@ -18,7 +18,7 @@ const AddProductPage = () => {
     if (!id) {
       return;
     }
-    axios.get('/places/'+id).then(response => {
+    axios.get('/product/'+id).then(response => {
        const {data} = response;
        setName(data.name);
        setCategory(data.category);
