@@ -15,6 +15,7 @@ import AddProductPage from './pages/AddProductPage';
 import Productpage from './pages/ProductPage';
 import MyItems from './pages/MyItems';
 import NotificationPage from './pages/NotificationPage';
+import IncomingRequestPage from './pages/IncomingRequestPage';
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -45,6 +46,8 @@ function App() {
         <Route path="/myprofile" element = {<ProfilePage/>}/>
         <Route path="/chat" element= {<Chatbot/>}/>
         <Route path="/notifications" element= {<NotificationPage/>}/>
+        <Route path="/incoming" element = {<IncomingRequestPage/>}/>
+
         
         
       </Routes>

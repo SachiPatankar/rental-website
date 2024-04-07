@@ -81,8 +81,8 @@ const Productpage = () => {
     return(
         <div className="mx-auto mt-20 flex mb-10 max-w-5xl justify-between items-start gap-4 p-3 border border-gray-300 shadow-md shadow-gray-300 rounded-md  ">
             <div className=" ml-10 mt-20 max-w-2xl">
-                    <img src={"http://localhost:4000/uploads/"+product.photos[0]} alt="testing" style={{height:'350px', width:'350px'}} />
-                    <div className="flex gap-2 justify-center">
+                    <img src={"http://localhost:4000/uploads/"+product.photos[0]} alt="testing" style={{height:'350px', width:'400px'}} className="object-cover"/>
+                    <div className="flex gap-2 justify-center ">
                        {/* {product.photos.map((image,index) =>
                             <img 
                             key={index} 

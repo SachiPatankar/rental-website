@@ -65,7 +65,7 @@ const productCategory = [
             <path d="M17 21v-2"/><path d="M21 21v-2"/>
             <path d="M22 19h-6v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2Z"/>
             </svg>,
-        path: '/others',
+        path: '/other',
         
     }
 ]

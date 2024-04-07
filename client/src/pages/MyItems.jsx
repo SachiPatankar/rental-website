@@ -23,11 +23,20 @@ const MyItems = () =>{
       console.error('Error deleting product:', error);
   }
   }
+
+  const getStatusColor = (status) => {
+    if (status) {
+        return 'bg-lime-500';
+    }
+    else{
+      return 'bg-neutral-500'
+    }
+  }
     return(
   <div>
     <Header2/>
       {items.map((item) => (
-        <div key={item.id} className=' flex justify-center bg-neutral-50  p-2 gap-10 border border-gray-300 rounded-xl mr-60 ml-60 mt-20' >
+        <div key={item.id} className=' flex justify-center bg-neutral-50  p-2 gap-10 border border-gray-300 rounded-xl mt-20' >
         <div className='left ml-4'>
           <img src={"http://localhost:4000/uploads/"+item.photos[0]}  alt="productImg" style={{height:'200px', width:'200ox'}} />
         </div>
@@ -35,6 +44,7 @@ const MyItems = () =>{
           <div className='space-y-1 mt-6'>
             <h1 className='font-semibold text-3xl'>{item.name}</h1>
             <br />
+            <div className='flex-col'>
             <div className='flex space-x-5 items-center'>
             <h2 className=' flex gap-2 text-xl'>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-hand-coins">
@@ -74,8 +84,11 @@ const MyItems = () =>{
                     </button>
               </div>
             </div>
+            <div>
+            <h1 className={`text-white px-3 py-1 rounded-3xl mt-4 ${getStatusColor(item.isAvailable)}`}>{item.isAvailable}</h1>
+            </div>
           </div>
-           
+           </div>
       </div>
 
     </div>

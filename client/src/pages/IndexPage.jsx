@@ -45,7 +45,7 @@ const IndexPage = () => {
                             src={"http://localhost:4000/uploads/"+ product.photos?.[0]} 
                             alt="camera" 
                             style={{height: '250px'}} 
-                            className="aspect-[16/9] w-full rounded-md md:aspect-auto md:h-[300px] lg:h-[200px]" />
+                            className="aspect-[16/9] w-full rounded-md md:aspect-auto md:h-[300px] lg:h-[200px] object-cover " />
                         </Link>
                         <span className="font-poppins text-3xl">{product.name}</span>
                         <br />

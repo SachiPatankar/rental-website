@@ -72,11 +72,15 @@ const Header2 = () => {
               <Link to={"/transactions"}>Ongoing Transactions</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link to={"/incoming"}>Incoming Requests</Link>
+            </li>
+            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link to={"/myitems"}>My Items</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link onClick={logout}>Logout</Link>
             </li>
+            
           </ul>
 
         </div>

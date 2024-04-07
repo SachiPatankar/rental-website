@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import Header2 from './Header-2';
 
 
 const AddProductPage = () => {
@@ -88,19 +89,29 @@ const AddProductPage = () => {
 
   return (
     <div>
+      <Header2/>
       <form onSubmit={saveProduct}>
       <div className='text-left'>
         <h2 className='text-xl pl-2'>Name of Product</h2>
         <input value={name} onChange={e => setName(e.target.value)} type="text" placeholder='Eg. Camera' className='max-w-xl'></input>
 
+        {/* <h2 className='text-xl pl-2'>Category</h2>
+        <input value={category} onChange={e => setCategory(e.target.value)} type="text" placeholder='it will be a drop down' className='max-w-md'></input> */}
         <h2 className='text-xl pl-2'>Category</h2>
-        <input value={category} onChange={e => setCategory(e.target.value)} type="text" placeholder='it will be a drop down' className='max-w-md'></input>
+            <select value={category} onChange={e => setCategory(e.target.value)} className='max-w-md'>
+                <option value="">Select...</option>
+                <option value="studio-eqp">Studio Equipments</option>
+                <option value="kitchen-appliances">Kitchen Appliances</option>
+                <option value="home-appliances">Home Appliances</option>
+                <option value="travel">Travel</option>
+                <option value="other">Other Electronics</option>
+            </select>
 
         <h2 className='text-xl pl-2'>Description</h2>
         <textarea value={description} onChange={e => setDescription(e.target.value)} type="text" placeholder='Eg. Some camera description...' className='max-w-2xl'></textarea>
 
         <h2 className='text-xl pl-2'>Area</h2>
-        <input value={area} onChange={e => setArea(e.target.value)} type="text" placeholder='it will be a drop down' className='max-w-md'></input>
+        <input value={area} onChange={e => setArea(e.target.value)} type="text" placeholder='Eg. Dhanakawadi' className='max-w-md'></input>
 
         <h2 className='text-xl pl-2'>Price</h2>
         <input value={price} onChange={e => setPrice(e.target.value)} type="text" placeholder='100' className='max-w-md'></input>

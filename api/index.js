@@ -304,6 +304,27 @@ app.get('/myrequests', async (req,res) => {
   });
 });
 
+app.get('/incomingrequests', async (req,res) => {
+  
+  const {token} = req.cookies;
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+
+    try{
+      const data = await Request.find({ owner: userData.id }).populate({
+        path: 'renter',
+        select: 'name surname locality city'
+    }).populate('product');
+      res.json(data);
+      console.log(data);
+      }
+    catch(e){
+      console.error("Error in /register route: ", e);
+      res.status(422).json({error: e.message});
+      }
+  });
+});
+
 app.get('/myitems', async (req,res) => {
   const {token} = req.cookies;
 
