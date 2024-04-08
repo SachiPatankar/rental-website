@@ -15,20 +15,16 @@ const Header = () => {
             <span className="font-bold">Rentals@PICT</span>
             </div>
             <div className="hidden md:block">
-            <div className={`flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center shadow-md shadow-gray-300`}>
-              <div>Anything</div>
-              <div className="border-l border-gray-300"></div>
-              <div>Anywhere</div>
-              <div className="border-l border-gray-300"></div>
-              <div>Any time</div>
-              <button className="bg-[#30d5c8] rounded-full p-1">
+            <div className={`flex py-2 px-4  rounded-full gap-4 items-center `}>
+              <input type="text" placeholder="Search..."/>
+              <button className="bg-[#30d5c8] rounded-full p-2 hover:p-3">
                 <img src={search} alt="search" />
               </button>
             </div>
             </div>
             <div className="flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center">
               <img src={menu} alt="menu" className="cursor-pointer" onClick={() => setToggle(!toggle)}/>
-              <Link to={'/login'} ><img src={user} alt="user" /></Link>
+              <Link to={'/profile'} ><img src={user} alt="user" /></Link>
             </div>
             <div className={`${
             !toggle ? "hidden" : "flex"
@@ -42,8 +38,8 @@ const Header = () => {
             </div>
         </header>
         <div className="m-4">
-          <div className={`sm:hidden flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
-              <div>Search....</div>
+          <div className={`sm:hidden flex py-2 px-4  rounded-full gap-4 items-center justify-between `}>
+              <input type="text" placeholder="Search..." />
               <button className="bg-[#30d5c8] rounded-full p-1">
                 <img src={search} alt="search" />
               </button>
