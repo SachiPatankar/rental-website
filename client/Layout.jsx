@@ -5,7 +5,7 @@ import Categorybar from './src/pages/CategoryBar';
 
 const Layout = () => {
   return (
-    <div className='pt-4 min-h-screen flex flex-col' style={{ height: '100vh' }}>
+    <div className='pt-4 min-h-screen flex flex-col' >
         <Header/>
         <Categorybar/>
         <Outlet />

@@ -1,48 +1,80 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { UserContext } from './UserContext';
+import axios from "axios";
 
-// const chatHistory = [
-//     { id: 1, type: 'incoming', message: 'Hello! How are you?' },
-//     { id: 2, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-//     { id: 3, type: 'incoming', message: 'I’m great, thanks for asking!' },
-//     { id: 4, type: 'outgoing', message: 'What have you been up to?' },
-//     { id: 5, type: 'incoming', message: 'Hello! How are you?' },
-//     { id: 6, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-//     { id: 7, type: 'incoming', message: 'I’m great, thanks for asking!' },
-//     { id: 8, type: 'outgoing', message: 'What have you been up to?' },
-//     // ... more messages
-// ];
+const ENDPOINT = "http://localhost:4000"; 
+import { io } from 'socket.io-client';
+var socket;
 
-const ChatComponent = () => {
-
+const ChatComponent = ({reqId}) => {
+    const {user} = useContext(UserContext);
     const [toggle, setToggle] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [messageInput, setmessageInput] = useState('');
+    const [socketConnect, setSocketConnect] = useState(false);
 
     const handleMenuToggle = () => {
         setToggle(!toggle);
     };
 
-    const [currentUserMessage, setCurrentUserMessage] = useState('');
+    useEffect(() => {
+        axios.get('/chat/'+reqId).then(response => {
+          setMessages(response.data);
+        });
+      }, []);
 
-    const [chatHistory, setChatHistory] = useState([
-        { id: 1, type: 'incoming', message: 'Hello! How are you?' },
-        { id: 2, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-        { id: 3, type: 'incoming', message: 'I’m great, thanks for asking!' },
-        { id: 4, type: 'outgoing', message: 'What have you been up to?' },
-        { id: 5, type: 'incoming', message: 'Hello! How are you?' },
-        { id: 6, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-        { id: 7, type: 'incoming', message: 'I’m great, thanks for asking!' },
-        { id: 8, type: 'outgoing', message: 'What have you been up to?' },
-        // ... more messages
-    ])
+    // useEffect (()=>{
+    // socket = io(ENDPOINT);
+    // socket.emit("setup", user);
+    // socket.on("connection", () => {
+    //     setSocketConnect(true);
+    // })
 
-    const handleSendMessage = () => {
-        if (!currentUserMessage.trim()) return;
+    // socket.emit("join chat", reqId);
+    // }, [])
+
+    useEffect(() => {
+        if (!socket) {
+          socket = io(ENDPOINT);
+          socket.emit("setup", user);
+          socket.on("connection", () => setSocketConnect(true));
+          socket.emit("join chat", reqId);
+        }
+      }, []);
+      
+
+    useEffect(() => {
+       socket.on("message received", (newMessageRecieved)  => {
+        console.log(newMessageRecieved);
+
+        if (reqId != newMessageRecieved.chat._id)
+        {
+            console.log("opps")
+        }else
+        {
+            setMessages([...messages, newMessageRecieved])
+        }
+
+        setMessages([...messages, newMessageRecieved])
+
+       })
+      });
+
+
+
+    const handleSendMessage = async() => {
+        if (!messageInput.trim()) return;
         const newMessage = {
-            id: chatHistory.length,
-            type: "outgoing",
-            message: currentUserMessage.trim(),
+            message: messageInput.trim(),
+            sender:user._id,
+            chat:reqId
         };
-        setChatHistory([...chatHistory, newMessage]);
-        setCurrentUserMessage(''); 
+
+        const data = await axios.post("/chat/"+ reqId, newMessage);
+
+        socket.emit("new message", data )
+        setMessages([...messages, newMessage]);
+        setmessageInput(''); 
     };
 
   return (
@@ -64,19 +96,18 @@ const ChatComponent = () => {
                         <div className='bg-primary text-white text-left p-4 sticky-top-0'>Username</div>
 
                         <div className='p-4'>
-                        {chatHistory.map((chat) => (
-                            <div key={chat.id} className={`flex ${chat.type === 'incoming' ? 'justify-start' : 'justify-end'}`}>
-                                <div className={`rounded-lg px-4 py-2 mb-2 ${chat.type === 'incoming' ? 'bg-gray-200 ' : 'bg-primary text-white'}`}>
-                                    {chat.message}
+                        {messages.map((message) => (
+                            <div className={`flex ${message.sender === user._id ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`rounded-lg px-4 py-2 mb-2 ${message.sender === user._id ? 'bg-primary ' : 'bg-gray-200 text-white'}`}>
+                                    {message.message}
                                 </div>
                             </div>
                         ))}
-                        </div>
 
                         <div>
                         <input
-                            value={currentUserMessage}
-                            onChange={(e) => setCurrentUserMessage(e.target.value)}
+                            value={messageInput}
+                            onChange={(e) => setmessageInput(e.target.value)}
                             className="w-full p-2 border-none rounded-lg focus:outline-none focus:border-neutral-500"
                             placeholder="Enter a message..."
                         ></input>
@@ -92,6 +123,7 @@ const ChatComponent = () => {
                 </div>
             </div>
         </div>
+</div>
 </div>
   )
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import Categorybar from "./CategoryBar";
 
 const IndexPage = () => {
 
@@ -36,6 +37,7 @@ const IndexPage = () => {
 
   return(
     <div className="">
+        {/* <div><Categorybar/></div> */}
         <ul className="mx-auto grid w-full max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
             {products.map((product) =>(
                 <li>

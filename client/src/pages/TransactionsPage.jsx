@@ -62,7 +62,7 @@ const TransactionsPage = () => {
         </div>
 
         <div className='ml-auto flex items-center pr-6'>
-        <ChatComponent/>
+        <ChatComponent reqId = {request._id}/>
         </div>
       </div>
 

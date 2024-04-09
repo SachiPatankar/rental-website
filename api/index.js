@@ -4,6 +4,7 @@ import connectDb from "./config/db.js";
 import {User} from "./models/userModel.js";
 import {Product} from "./models/productModel.js";
 import {Request} from "./models/requestModel.js";
+import { Message } from "./models/messageModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -12,6 +13,11 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import multer from "multer";
 import fs from "fs";
+
+
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,14 +37,22 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + "/uploads"));
 
 
+// app.use(cors({
+//     credentials:true,
+//     origin:"http://localhost:5173",
+// }));
+
 app.use(cors({
-    credentials:true,
-    origin:"http://localhost:5173",
+  credentials: true,
+  origin: ["http://localhost:5173", "http://localhost:5174"]
 }));
+
+
 
 app.get("/test", (req, res)=>{
     res.json("a okay");
 });
+
 
 app.post("/register", async (req,res) => {
     const {
@@ -197,7 +211,7 @@ app.get("/products", async(req,res) => {
   try{
     const data = await Product.find();
     res.json(data);
-    console.log(data);
+    // console.log(data);
   }catch(e){
     console.error("Error in /register route: ", e);
     res.status(422).json({error: e.message});
@@ -212,7 +226,7 @@ app.get("/product/:id", async(req,res) => {
       select: 'name surname locality city',
     });
     res.json(data);
-    console.log(data);
+    // console.log(data);
   }catch(e){
     console.error("Error in /register route: ", e);
     res.status(422).json({error: e.message});
@@ -224,7 +238,7 @@ app.get("/products/:category", async(req,res) => {
   try{
     const data = await Product.find({category : cat});
     res.json(data);
-    console.log(data);
+    // console.log(data);
   }catch(e){
     console.error("Error in /register route: ", e);
     res.status(422).json({error: e.message});
@@ -295,7 +309,7 @@ app.get('/myrequests', async (req,res) => {
         select: 'name surname locality city'
     }).populate('product');
       res.json(data);
-      console.log(data);
+      // console.log(data);
       }
     catch(e){
       console.error("Error in /register route: ", e);
@@ -303,6 +317,7 @@ app.get('/myrequests', async (req,res) => {
       }
   });
 });
+
 
 app.get('/incomingrequests', async (req,res) => {
   
@@ -325,6 +340,72 @@ app.get('/incomingrequests', async (req,res) => {
   });
 });
 
+app.put("/confirm-request/:id", async (req,res) => {
+  const id = req.params.id;
+  try{
+    const requestDoc = await Request.findById(id);
+    const productId = requestDoc.product;
+
+    requestDoc.set({status:"confirmed"});
+    await requestDoc.save();
+
+    const productDoc = await Product.findById(productId);
+    productDoc.set({isAvailable:false});
+    await productDoc.save();
+  }catch(e){
+    console.error("Error in /confirm/:id route: ", e);
+    res.status(422).json({error: e.message});
+    }
+
+});
+
+// app.put("/confirm-request/:id", async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const requestDoc = await Request.findById(id);
+//     if (!requestDoc) {
+//       return res.status(404).json({ error: "Request not found" });
+//     }
+
+//     const productId = requestDoc.chat._id;
+//     if (!productId) {
+//       return res.status(404).json({ error: "Product ID not found in request" });
+//     }
+
+//     requestDoc.status = "confirmed";
+//     await requestDoc.save();
+
+//     const productDoc = await Product.findById(productId);
+//     if (!productDoc) {
+//       return res.status(404).json({ error: "Product not found" });
+//     }
+
+//     productDoc.isAvailable = false;
+//     await productDoc.save();
+
+//     res.status(200).json({ message: "Request confirmed successfully" });
+//   } catch (e) {
+//     console.error("Error in /confirm-request/:id route: ", e);
+//     res.status(500).json({ error: e.message });
+//   }
+// });
+
+
+app.put("/decline-request/:id", async (req,res) => {
+  const id = req.params.id;
+  try{
+    const requestDoc = await Request.findById(id);
+
+    requestDoc.set({status:"declined"});
+    await requestDoc.save();
+
+  }catch(e){
+    console.error("Error in /confirm/:id route: ", e);
+    res.status(422).json({error: e.message});
+    }
+})
+
+
 app.get('/myitems', async (req,res) => {
   const {token} = req.cookies;
 
@@ -343,7 +424,82 @@ app.get('/myitems', async (req,res) => {
   });
 });
 
-
-app.listen(PORT, () => {
-    console.log(`Server live on ${PORT}`);
+app.get("/chat/:id", async(req,res)=> {
+  try {
+    const data = await Message.find({ chat: req.params.id}).populate("chat")
+    res.json(data);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
 });
+
+app.post("/chat/:id", async(req,res)=>{
+  const newMessage = req.body;
+
+  if (!newMessage.message.trim()) {
+    console.log("No content");
+    return res.sendStatus(400);
+  }
+
+  try {
+    var message = await Message.create(newMessage);
+    message = await message.populate('chat');
+    res.json(message);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+
+
+const server = createServer(app);
+
+
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("connected to socket.io");
+
+  socket.on("setup", (user) => {
+    socket.join(user._id);
+    console.log(user._id);
+    socket.emit('connected');
+  })
+
+    socket.on("join chat", (room) => {
+      socket.join(room);
+      console.log("User joined room"+ room);
+    })
+
+    socket.on("new message", (newMessageRecieved) => {
+      var {data}  = newMessageRecieved;
+      // console.log(data);
+
+      if (data.chat.owner == data.sender)
+      {
+        console.log("emiting to renter from index");
+        socket.in(data.chat.renter).emit("message received", data);
+      }
+      else{
+        console.log("emiting to owner from index");
+        socket.in(data.chat.owner).emit("message received", data);
+      }
+    })
+
+    // socket.off("setup", ()=> {
+    //   console.log("User Disconnected");
+    //   socket.leave(userData._id);
+    // })
+
+});
+
+server.listen(PORT, () => {
+  console.log(`Server live on ${PORT}`);
+});
+

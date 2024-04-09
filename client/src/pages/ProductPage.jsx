@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {calendar,} from "../assets"
+import {calendar} from "../assets"
 import axios from "axios"
 
 

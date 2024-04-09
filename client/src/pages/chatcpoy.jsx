@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { UserContext } from './UserContext';
 
-const chatHistory = [
-    { id: 1, type: 'incoming', message: 'Hello! How are you?' },
-    { id: 2, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-    { id: 3, type: 'incoming', message: 'I’m great, thanks for asking!' },
-    { id: 4, type: 'outgoing', message: 'What have you been up to?' },
-    { id: 5, type: 'incoming', message: 'Hello! How are you?' },
-    { id: 6, type: 'outgoing', message: 'I’m good, thanks! And you?' },
-    { id: 7, type: 'incoming', message: 'I’m great, thanks for asking!' },
-    { id: 8, type: 'outgoing', message: 'What have you been up to?' },
-    // ... more messages
-];
+const ENDPOINT = "http://localhost:4000"; 
+import { io } from 'socket.io-client';
 
-const ChatPage = () => {
+var socket, selectedChatCompare;
+
+const ChatComponent = () => {
+
+    
+
+    const {user,setUser,ready} = useContext(UserContext);
 
     const [toggle, setToggle] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [messageInput, setMessageInput] = useState('');
+
+    const [socketConnect, setSocketConnect] = useState(false);
 
     const handleMenuToggle = () => {
         setToggle(!toggle);
@@ -45,10 +47,12 @@ const ChatPage = () => {
         setCurrentUserMessage(''); 
     };
 
+    
+
   return (
     <div>
         <button onClick={handleMenuToggle} className='bg-primary text-white px-4 py-2 rounded-3xl'>
-        {toggle ? 'Close Chat' : 'Chat with us!'}
+        Chat Now
         </button>
 
         <div
@@ -71,7 +75,6 @@ const ChatPage = () => {
                                 </div>
                             </div>
                         ))}
-                        </div>
 
                         <div>
                         <input
@@ -80,9 +83,12 @@ const ChatPage = () => {
                             className="w-full p-2 border-none rounded-lg focus:outline-none focus:border-neutral-500"
                             placeholder="Enter a message..."
                         ></input>
-                        <button onClick={handleSendMessage} className="mt-2 w-full bg-primary text-white font-bold py-2 px-4 rounded">
+                        <div className='flex'>
+                        <button onClick={handleSendMessage} className="mt-2 w-full bg-primary text-white font-bold py-2 px-4 mr-1 rounded">
                             Send
                         </button>
+                        <button onClick={handleMenuToggle} className="mt-2 ml-1 w-full bg-primary text-white font-bold py-2 px-4 rounded">Close</button>
+                        </div>
                         </div>
                     </div>
                     
@@ -90,7 +96,8 @@ const ChatPage = () => {
             </div>
         </div>
 </div>
+</div>
   )
 }
 
-export default ChatPage
+export default ChatComponent

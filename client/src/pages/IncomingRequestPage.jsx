@@ -17,9 +17,7 @@ const IncomingRequestPage = () => {
     const handleConfirm = async (requestId) => {
         try {
             await axios.put(`/confirm-request/${requestId}`);
-            setRequests(prevRequests => prevRequests.map(request =>
-                request._id === requestId ? { ...request, status: "confirmed" } : request
-            ));
+            
         } catch (error) {
             console.error('Error confirming request:', error);
         }
@@ -28,9 +26,7 @@ const IncomingRequestPage = () => {
     const handleDecline = async (requestId) => {
         try {
             await axios.put(`/decline-request/${requestId}`);
-            setRequests(prevRequests => prevRequests.map(request =>
-                request._id === requestId ? { ...request, status: "declined" } : request
-            ));
+            
         } catch (error) {
             console.error('Error declining request:', error);
         }
@@ -62,22 +58,35 @@ const IncomingRequestPage = () => {
             <h2>{request.renter.name} {request.renter.surname}</h2>
             <h2>{request.renter.locality}, {request.renter.city}</h2>
 
-            <div className='flex gap-5'>
-            <button 
-            onClick={() => handleConfirm(request._id)}
-            className={'text-white px-3 py-1 rounded-3xl mt-4 bg-lime-500'}>Confirm</button>
-
-            <button 
-            onClick={() => handleDecline(request._id)}
-            className={'text-white px-3 py-1 rounded-3xl mt-4 bg-red-500'}>Decline</button>
-            </div>
+            {request.status === "unconfirmed" ? (
+              <div className='flex gap-5'>
+                <button 
+                  onClick={() => handleConfirm(request._id)}
+                  className={'text-white px-3 py-1 rounded-3xl mt-4 bg-lime-500'}
+                >
+                  Confirm
+                </button>
+                <button 
+                  onClick={() => handleDecline(request._id)}
+                  className={'text-white px-3 py-1 rounded-3xl mt-4 bg-red-500'}
+                >
+                  Decline
+                </button>
+              </div>
+            ) : (
+              <button 
+                className={'text-white px-3 py-1 rounded-3xl mt-4 bg-gray-500'}
+              >
+                {request.status}
+              </button>
+            )}
 
 
           </div>
         </div>
 
         <div className='ml-auto flex items-center pr-6'>
-        <ChatComponent/>
+        <ChatComponent reqId = {request._id}/>
         </div>
       </div>
 

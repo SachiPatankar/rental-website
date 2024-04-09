@@ -10,7 +10,7 @@ import axios from 'axios';
 import { UserContextProvider } from './pages/UserContext';
 import AccountPage from './pages/TransactionsPage';
 import ProfilePage from './pages/ProfilePage';
-import Chatbot from './pages/ChatPage';
+import ChatComponent from './pages/ChatComponent.jsx';
 import AddProductPage from './pages/AddProductPage';
 import Productpage from './pages/ProductPage';
 import MyItems from './pages/MyItems';
@@ -44,7 +44,7 @@ function App() {
         <Route path="/transactions" element = {<TransactionsPage/>}/>
         <Route path="/myitems" element = {<MyItems/>}/>
         <Route path="/myprofile" element = {<ProfilePage/>}/>
-        <Route path="/chat" element= {<Chatbot/>}/>
+        <Route path="/chat" element= {<ChatComponent/>}/>
         <Route path="/notifications" element= {<NotificationPage/>}/>
         <Route path="/incoming" element = {<IncomingRequestPage/>}/>
 
