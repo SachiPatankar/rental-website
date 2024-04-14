@@ -120,20 +120,6 @@ app.post("/login", async(req,res) => {
         }
 });
 
-// app.get("/profile", (req,res) => {
-//     const token = req.cookies.token;
-//     if (token){
-//         jwt.verify(token.token, jwtSecret, {}, async(err, userData) => {
-//             if (err) throw err;
-//             const userDoc = await User.findById(userData.id);
-//             res.json(userDoc);
-
-//         })
-//     }else{
-//         res.json(null)
-//     }
-//     res.json(req.cookies);
-// })
 
 app.get('/profile', (req,res) => {
     const {token} = req.cookies;
@@ -358,37 +344,6 @@ app.put("/confirm-request/:id", async (req,res) => {
     }
 
 });
-
-// app.put("/confirm-request/:id", async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     const requestDoc = await Request.findById(id);
-//     if (!requestDoc) {
-//       return res.status(404).json({ error: "Request not found" });
-//     }
-
-//     const productId = requestDoc.chat._id;
-//     if (!productId) {
-//       return res.status(404).json({ error: "Product ID not found in request" });
-//     }
-
-//     requestDoc.status = "confirmed";
-//     await requestDoc.save();
-
-//     const productDoc = await Product.findById(productId);
-//     if (!productDoc) {
-//       return res.status(404).json({ error: "Product not found" });
-//     }
-
-//     productDoc.isAvailable = false;
-//     await productDoc.save();
-
-//     res.status(200).json({ message: "Request confirmed successfully" });
-//   } catch (e) {
-//     console.error("Error in /confirm-request/:id route: ", e);
-//     res.status(500).json({ error: e.message });
-//   }
-// });
 
 
 app.put("/decline-request/:id", async (req,res) => {
