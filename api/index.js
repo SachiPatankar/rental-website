@@ -407,6 +407,55 @@ app.post("/chat/:id", async(req,res)=>{
   }
 });
 
+app.get("/profile/:id", async(req,res) => {
+  const id = req.params.id;
+  try{
+    const data = await User.findById(id);
+    res.json(data);
+  }catch(e){
+    console.error("Error in /profile/:id route: ", e);
+    res.status(422).json({error: e.message});
+  }
+});
+
+app.put('/profile', async (req,res) => {
+  const {token} = req.cookies;
+  const {id,name,surname,locality,city,email,pswd} = req.body
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    if (err) throw err;
+    const profileDoc = await User.findById(id);
+    if (userData.id === profileDoc._id) {
+      profileDoc.set({
+        name,surname,locality,city,email,
+        pswd:bcrypt.hashSync(pswd, bcryptSalt)
+      });
+      await profileDoc.save();
+      res.json('ok');
+    }
+  });
+});
+
+app.get("/search", async (req, res) => {
+  const { query } = req.query;  // Get the search query parameter
+  try {
+    let filter = {};
+    if (query) {
+      filter = { $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } }
+      ]};
+    }
+    const data = await Product.find(filter);
+    res.json(data);
+  } catch (e) {
+    console.error("Error in /products route: ", e);
+    res.status(422).json({ error: e.message });
+  }
+});
+
+
+
+
 
 const server = createServer(app);
 

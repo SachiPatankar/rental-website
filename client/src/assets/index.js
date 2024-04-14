@@ -1,5 +1,5 @@
 import logo from "./logo.svg";
-import search from "./search.svg";
+import searchimg from "./search.svg";
 import user from "./user.svg";
 import menu from "./menu.svg";
 
@@ -13,7 +13,7 @@ import calendar from "./calendar.svg";
 
 export {
     logo,
-    search,
+    searchimg,
     user,
     menu,
     test1,

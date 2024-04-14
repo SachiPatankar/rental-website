@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {calendar} from "../assets"
 import axios from "axios"
-import Carousel from "./Carousel"
+
 
 const Productpage = () => {
 
@@ -80,13 +80,10 @@ const Productpage = () => {
 
     return(
         <div className="mx-auto mt-20 flex mb-10 max-w-5xl justify-between items-start gap-4 p-3 border border-gray-300 shadow-md shadow-gray-300 rounded-md  ">
-            <div 
-            className=" ml-10 mt-20 max-w-2xl"
-            style = {{height:'350px', width:'350px'}}
-            >
-                    {/* <img src={selectedImage} alt="testing" style={{height:'350px', width:'350px'}} />
-                    <div className="flex gap-2 justify-center">
-                       {imagesDisplay.map((image,index) =>
+            <div className=" ml-10 mt-20 max-w-2xl">
+                    <img src={"http://localhost:4000/uploads/"+product.photos[0]} alt="testing" style={{height:'350px', width:'400px'}} className="object-cover"/>
+                    <div className="flex gap-2 justify-center ">
+                       {/* {product.photos.map((image,index) =>
                             <img 
                             key={index} 
                             src={image} 
@@ -94,15 +91,14 @@ const Productpage = () => {
                             style={{height:'45px', width:'45px'}} 
                             onClick={() => handleClick(image)}
                             />
-                       )} 
-                    </div> */}
-                    <Carousel slides = {product.photos}/>
+                       )}  */}
+                    </div>
             </div>
             <div className=" max-w-xl gap-3 " style={{padding:'20px'}}>
                    <h1 className="text-heading mb-3.5 text-lg font-bold md:text-xl lg:text-2xl 2xl:text-3xl">{product.name}</h1>
-                    <p className="text-body text-sm leading-6  lg:text-base lg:leading-8">
-                     {product.description}
-                    </p>  
+                   {/* <p className="text-body text-sm leading-6  lg:text-base lg:leading-8">
+                    
+                    </p>  */}
                    <div className="fonts-poppins text-2xl">
                     Rs <span className="fonts-poppins text-4xl font-bold text-[#30c5d8]">{product.price}</span> per Day
                    </div>
@@ -136,11 +132,11 @@ const Productpage = () => {
                                 </svg>
                                 <span className="fonts-poppins text-20 font-semibold"> 898745620</span>
                             </li>
-                            {/* <li>
+                            <li>
                                 <span className="fonts-poppins text-xl font-bold">Product features: </span>
                                 <p>{product.description}
                                 </p>
-                            </li> */}
+                            </li>
                         </ul>
                    </div>
                    <br />
@@ -195,7 +191,7 @@ const Productpage = () => {
                    <br />
                    <button 
                    onClick={requestProduct}
-                   className="m-3 p-2 bg-primary hover:bg-primary/80 shadow-lg rounded-lg">
+                   className="m-3 p-2 bg-primary hover:bg-primary/80 shadow-lg rounded-2xl">
                         Request product
                    </button>
             </div>

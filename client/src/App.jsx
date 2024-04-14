@@ -16,6 +16,7 @@ import Productpage from './pages/ProductPage';
 import MyItems from './pages/MyItems';
 import NotificationPage from './pages/NotificationPage';
 import IncomingRequestPage from './pages/IncomingRequestPage';
+import SearchResults from './pages/SearchResults.jsx';
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
@@ -34,6 +35,7 @@ function App() {
 
           <Route path="/product" element={<Productpage/>}/>
           <Route path="/product/:id" element={<Productpage/>}/>
+          <Route path="/search" element={<SearchResults />} />
         
         </Route>
 
@@ -43,10 +45,11 @@ function App() {
 
         <Route path="/transactions" element = {<TransactionsPage/>}/>
         <Route path="/myitems" element = {<MyItems/>}/>
-        <Route path="/myprofile" element = {<ProfilePage/>}/>
+        <Route path="/myprofile/:id" element = {<ProfilePage/>}/>
         <Route path="/chat" element= {<ChatComponent/>}/>
         <Route path="/notifications" element= {<NotificationPage/>}/>
         <Route path="/incoming" element = {<IncomingRequestPage/>}/>
+        
 
         
         

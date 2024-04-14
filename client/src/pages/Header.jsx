@@ -1,22 +1,36 @@
 import React, { useState } from 'react'
-import {Link} from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import {useContext} from "react";
 import { UserContext } from './UserContext';
 import axios from "axios";
-import { search } from '../assets';
+import { searchimg } from '../assets';
 
-const logout = async() =>{
-  await axios.post("/logout");
-}
+
 
 const Header = () => {
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
     const [toggle,setToggle] = useState(false);
+    const [search, setSearch] = useState("");
+    const navigate = useNavigate();
 
     const handleMenuToggle = () => {
       setToggle(!toggle);
     };
+
+    const logout = async() =>{
+      await axios.post("/logout");
+      setUser(null);
+      navigate('/login');
+    }
+
+    const handleSearch = (event) => {
+      event.preventDefault(); // Prevent the form from submitting via HTTP
+      if (search.trim()) {
+          navigate(`/search?query=${encodeURIComponent(search)}`); // Redirect to the search page with query
+          setSearch(''); // Optionally reset the search input after redirect
+      }
+  };
 
     return (
       <header >
@@ -45,9 +59,14 @@ const Header = () => {
 
       
       <div className={`hidden md:flex py-2 px-4 border border-gray-300 rounded-full gap-4 items-center justify-between shadow-mg shadow-gray-300`}>
-              <input placeholder='Search...' className='border-none focus:outline-none'></input>
-              <button className="bg-primary rounded-full p-1">
-                <img src={search} alt="search" />
+              <input 
+              placeholder='Search...' 
+              className='border-none focus:outline-none'
+              value = {search}
+              onChange={e => setSearch(e.target.value)}></input>
+              <button className="bg-primary rounded-full p-1"
+                      onClick={handleSearch}>
+                <img src={searchimg} alt="search" />
               </button>
           </div>
 
@@ -57,11 +76,11 @@ const Header = () => {
 
         
         <div className='flex gap-2'>
-          <Link to={"/notifications"} className='m-auto'>
+          {/* <Link to={"/notifications"} className='m-auto'>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
           <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z" clip-rule="evenodd" />
           </svg>
-          </Link>
+          </Link> */}
 
         <Link to={user? null :'/login'} 
               className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
@@ -93,7 +112,7 @@ const Header = () => {
         >
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
-              <Link to={"/myprofile"}>My Profile</Link>
+              <Link to={user ? `/myprofile/${user._id}`: "/myprofile"}>My Profile</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link to={"/transactions"}>Ongoing Transactions</Link>
