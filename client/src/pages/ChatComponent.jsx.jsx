@@ -98,7 +98,7 @@ const ChatComponent = ({reqId}) => {
                         <div className='p-4'>
                         {messages.map((message) => (
                             <div className={`flex ${message.sender === user._id ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`rounded-lg px-4 py-2 mb-2 ${message.sender === user._id ? 'bg-primary ' : 'bg-gray-200 text-white'}`}>
+                                <div className={`rounded-lg px-4 py-2 mb-2 ${message.sender === user._id ? 'bg-primary text-white' : 'bg-gray-200 '}`}>
                                     {message.message}
                                 </div>
                             </div>

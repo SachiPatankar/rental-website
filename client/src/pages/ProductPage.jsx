@@ -195,9 +195,12 @@ const Productpage = () => {
                    <br />
                    <button 
                    onClick={requestProduct}
-                   className="m-3 p-2 bg-primary hover:bg-primary/80 shadow-lg rounded-lg">
-                        Request product
+                   disabled={!product.isAvailable}
+                   className={`m-3 p-2 bg-primary hover:bg-primary/80 shadow-lg rounded-lg `}>
+                        {product.isAvailable ? "Request Product": "Unavailable"}
                    </button>
+                   
+
             </div>
         </div>
         </div>

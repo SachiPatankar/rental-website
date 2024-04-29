@@ -65,8 +65,8 @@ const Header2 = () => {
           
 
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
-            <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
-              <Link to={"/myprofile"}>My Profile</Link>
+          <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
+              <Link to={user ? `/myprofile/${user._id}`: "/myprofile"}>My Profile</Link>
             </li>
             <li className={`font-poppins font-medium cursor-pointer text-[16px] mb-4`}>
               <Link to={"/transactions"}>Ongoing Transactions</Link>

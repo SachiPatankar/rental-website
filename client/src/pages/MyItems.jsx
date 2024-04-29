@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import {Link, useNavigate } from "react-router-dom";
 import Header2 from './Header-2';
 
 const MyItems = () =>{
@@ -35,8 +35,13 @@ const MyItems = () =>{
     return(
   <div>
     <Header2/>
+    <div>
+        <Link to="/addproduct">
+          <button className='bg-primary text-white p-4 rounded-xl font-semibold'>Add Product</button>
+        </Link>
+      </div>
       {items.map((item) => (
-        <div key={item.id} className=' flex justify-center bg-neutral-50  p-2 gap-10 border border-gray-300 rounded-xl mt-20' >
+        <div key={item.id} className=' flex justify-center bg-neutral-50  p-2 gap-10 border border-gray-300 rounded-xl mt-5' >
         <div className='left ml-4 object-cover'>
           <img src={"http://localhost:4000/uploads/"+item.photos[0]} className='object-cover' alt="productImg" style={{height:'200px', width:'200px'}} />
         </div>
