@@ -327,7 +327,7 @@ app.get('/incomingrequests', async (req,res) => {
   });
 });
 
-cron.schedule('0 0 * * *', async () => { // Runs daily at midnight
+cron.schedule('19 16 * * *', async () => { // Runs daily at midnight
   try {
     
       const expiredRequests = await Request.find({ to: { $lte: new Date() }, status: "confirmed" });
@@ -335,7 +335,7 @@ cron.schedule('0 0 * * *', async () => { // Runs daily at midnight
       
       for (const request of expiredRequests) {
          
-          request.status = "unconfirmed";
+          request.status = "completed";
           await request.save();
 
          

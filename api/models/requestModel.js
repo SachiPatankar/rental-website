@@ -26,7 +26,7 @@ const requestModel = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['confirmed', 'unconfirmed', 'declined'],
+    enum: ['confirmed', 'unconfirmed', 'declined', 'completed'],
     default: 'unconfirmed' // Default status when a request is created
   }
 
