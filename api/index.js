@@ -13,6 +13,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import multer from "multer";
 import fs from "fs";
+import cron from "node-cron";
 
 
 import { createServer } from 'http';
@@ -324,6 +325,31 @@ app.get('/incomingrequests', async (req,res) => {
       res.status(422).json({error: e.message});
       }
   });
+});
+
+cron.schedule('0 0 * * *', async () => { // Runs daily at midnight
+  try {
+    
+      const expiredRequests = await Request.find({ to: { $lte: new Date() }, status: "confirmed" });
+
+      
+      for (const request of expiredRequests) {
+         
+          request.status = "unconfirmed";
+          await request.save();
+
+         
+          const productDoc = await Product.findById(request.product);
+
+         
+          productDoc.isAvailable = true;
+          await productDoc.save();
+
+          console.log("Cron");
+      }
+  } catch (e) {
+      console.error("Error in expiration cron job: ", e);
+  }
 });
 
 app.put("/confirm-request/:id", async (req,res) => {
